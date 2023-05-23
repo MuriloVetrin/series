@@ -7,10 +7,12 @@ use Illuminate\Http\Request;
 
 class SeriesController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $series = Serie::get();
-        return view('series.index', compact('series'));
+        
+        $mensagem = $request->session()->get('mensagem');
+        return view('series.index', compact('series', 'mensagem'));
     }
 
     public function create()
@@ -20,14 +22,20 @@ class SeriesController extends Controller
 
     public function store(Request $request)
     {
-        $serie = Serie::create($request->all());
+        $dados = $request->except("_token");
+
+        Serie::create($dados);
+
+        $request->session()->flash('mensagem', "Série {$serie->id} cirada com sucesso {$serie->nome}");
+
         return redirect()->route('list_series');
     }
     
-    public function destroy(int $id)
+    public function destroy(Request $request)
     {
-        $series  = Serie::find($id);
-        $series ->delete();
+        Serie::destroy($request->id);
+
+        $request->session()->flash('mensagem', 'Série removida com sucesso.');
         return redirect('/series');
     }
 }

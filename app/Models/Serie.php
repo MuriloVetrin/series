@@ -10,4 +10,9 @@ class Serie extends Model
     use HasFactory;
 
     protected $fillable = ['nome'];
+
+    public function tempodadas()
+    {
+        return $this->hasMany(Temporadas::class);
+    }
 }

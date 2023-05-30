@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('episodios', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('temporada_id');
-            $table->integer('numero');
             $table->timestamps();
+            $table->integer('numero');
 
-            $table->foreign('temporada_id')->references('id')->on('temporada');
+            $table->unsignedBigInteger('temporada_id');
+            $table->foreign('temporada_id')->references('id')->on('temporadas');
         });
     }
 
